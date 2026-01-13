@@ -5,7 +5,8 @@ pub enum EventData {
     KeyPress(u32),
     PointerPress(u8),
     PointerMove { x: f64, y: f64 },
-    Focus,
+    FocusIn,
+    FocusOut,
 }
 
 pub struct Event {
@@ -20,4 +21,3 @@ pub struct Event {
     /// event-specific data
     pub data: EventData,
 }
-

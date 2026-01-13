@@ -44,7 +44,7 @@ where
     // Set up a recording range for events of interest
     let mut range = record::Range::default();
     range.delivered_events.first = record::ElementHeader::from(xproto::KEY_PRESS_EVENT);
-    range.delivered_events.last = record::ElementHeader::from(xproto::FOCUS_IN_EVENT);
+    range.delivered_events.last = record::ElementHeader::from(xproto::FOCUS_OUT_EVENT);
 
     // Set up a recording context
     let rc = ctrl_conn.generate_id().unwrap();
@@ -155,7 +155,23 @@ where
                             let event = event::Event {
                                 timestamp: chrono::Utc::now(),
                                 app: class,
-                                data: event::EventData::Focus,
+                                data: event::EventData::FocusIn,
+                            };
+                            callback(&event);
+                        }
+
+                        stream = remaining;
+                    }
+                    xproto::FOCUS_OUT_EVENT => {
+                        // parse the event
+                        let (event, remaining) = xproto::FocusOutEvent::try_parse(data).unwrap();
+
+                        // if the window reports with WM_CLASS, report the event
+                        if let Some(class) = get_window_class(&ctrl_conn, event.event).unwrap() {
+                            let event = event::Event {
+                                timestamp: chrono::Utc::now(),
+                                app: class,
+                                data: event::EventData::FocusOut,
                             };
                             callback(&event);
                         }
