@@ -1,0 +1,13 @@
+assert_lefthook_installed: true
+min_version: 2.0.0
+glob_matcher: doublestar
+pre-commit:
+  follow: true
+  piped: true
+  jobs:
+    - name: check
+      run: cargo check
+      stage_fixed: true
+    - name: format
+      run: cargo fmt
+      stage_fixed: true
