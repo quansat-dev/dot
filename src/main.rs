@@ -7,6 +7,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
 
     let callback: Box<dyn Fn(&event::Event) + Send + Sync> = Box::new(|event: &event::Event| {
+        let ignored_apps = ["i3", "sway"];
+        for app in ignored_apps.iter() {
+            if event.app.to_lowercase().contains(app) {
+                return;
+            }
+        }
+
         info!(
             "[{}] App: {}, Event: {:?}",
             event.timestamp.to_rfc3339(),
