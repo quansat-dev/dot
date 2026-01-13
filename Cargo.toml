@@ -1,0 +1,49 @@
+[package]
+name = "quansat-dot"
+version = "0.1.0"
+edition = "2024"
+description = "Digital observability toolkit — a tracker for personal digital routines"
+readme = "README.md"
+homepage = "https://dot.quansat.dev"
+repository = "https://github.com/quansat-dev/dot"
+license = "MIT"
+keywords = [
+  "activity",
+  "digital",
+  "footprint",
+  "habit",
+  "observability",
+  "routine",
+  "time",
+  "tracking",
+  "well-being"
+]
+categories = [
+  "command-line-utilities",
+]
+
+[[bin]]
+name = "dot"
+path = "src/main.rs"
+
+[dependencies]
+chrono = "0.4"
+env_logger = "0.11"
+log = "0.4"
+rdev = "0.5"
+
+[target.'cfg(all(unix, not(target_os = "macos")))'.dependencies]
+libc = "0.2"
+x11rb = { version = "0.13", features = [
+  "extra-traits",
+  "record",
+  "request-parsing",
+], optional = true }
+
+[features]
+default = ["x11rb"]
+x11rb = ["dep:x11rb"]
+
+# use LTO for smaller binaries (that take longer to build)
+[profile.release]
+lto = true
