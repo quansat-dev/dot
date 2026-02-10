@@ -21,7 +21,7 @@ x11rb::atom_manager! {
 
 pub fn record<C>(callback: C)
 where
-    C: Fn(&event::Event) + Send + Sync + 'static,
+    C: Fn(&event::Event) + Send + Sync,
 {
     // From https://www.x.org/releases/X11R7.6/doc/recordproto/record.html
     // "The typical communication model for a recording client is to open two
