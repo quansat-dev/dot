@@ -5,9 +5,18 @@ pre-commit:
   follow: true
   piped: true
   jobs:
-    - name: check
-      run: cargo check
-      stage_fixed: true
-    - name: format
-      run: cargo fmt
-      stage_fixed: true
+    - name: desktop
+      root: apps/desktop
+      group:
+        parallel: false
+        jobs:
+          - name: check
+            run: cargo check
+            stage_fixed: true
+          - name: format
+            run: cargo fmt
+            stage_fixed: true
+commit-msg:
+  jobs:
+    - name: conventional
+      run: ./scripts/commit-lint.sh {1}
