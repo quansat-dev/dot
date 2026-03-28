@@ -1,3 +1,3 @@
-# dot.quansat.dev
+# dot - (d)igital (o)bservability (t)oolkit
 
-dot — Digital Observability Toolkit — a tracker for personal digital routines
+It tracks things, digitally.
