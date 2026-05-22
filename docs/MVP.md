@@ -49,11 +49,12 @@ This is the core component that handles the tracking via native OS APIs.
    dot project stop <project-name>
    ```
 
-4. Configure the engine, e.g. set up sync with a server, etc. 
+4. Configure the engine via a config file in Lua, e.g. `~/.config/dot/init.lua`:
 
-   ```bash
-   dot config set <key> <value>
-   dot config get <key>
+   ```lua
+   return {
+      -- config in lua
+   }
    ```
 
 ### II. Query Capabilities
@@ -106,20 +107,13 @@ We can start with the following plugins:
 2. Lua-based neovim plugin that does the same as (1).
 3. Browser extension (likely implemented using [wxt]) that adds metadata about the web domain, and show relevant stats in the extension popup.
 4. [polybar] (linux-only) plugin that utilises the query capabilities in II.
-
-#### Types of Plugins 
-
-Looking at the previous section, there are 2 types of plugins (some can be both):
-
-1. Ingress ("Command") plugins: add metadata to the engine,
-2. Egress ("Query") plugins: query the engine for statistics and show them somewhere.
-
+ 
 #### Plugin-to-Engine Interprocess Communication
 
-We'd likely need to implement some form of communication between the plugins and engine. Some ideas:
+We'd likely need to implement some form of communication between the plugins and engine to add the metadata. Some ideas:
 
-- some background daemon ("Unix Domain Socket" on UNIX or "Named Pipes" on Windows) -> support VSCode & neovim plugins
-- a local REST server -> support the browser extension and polybar plugin.
+- some background daemon, e.g. via "Unix Domain Socket" on UNIX or "Named Pipes" on Windows -> this can support VSCode & Neovim plugins
+- a local REST server -> this can support the browser extension and polybar plugin.
 
 #### Unified Interface for Creating Plugins
 
@@ -138,8 +132,8 @@ const plugin = definePlugin({
    },
 });
 
-plugin.registerMetadata({ /* ... */ }); // for ingress plugins
-plugin.query({ /* ... */ }); // for egress plugins
+plugin.registerMetadata({ /* ... */ }); 
+plugin.query({ /* ... */ });
 ```
 
 ```rust
@@ -152,8 +146,8 @@ let plugin = define_plugin!(
    },
 );
 
-plugin.register_metadata({ /* ... */ }); // for ingress plugins
-plugin.query({ /* ... */ }); // for egress plugins
+plugin.register_metadata({ /* ... */ });
+plugin.query({ /* ... */ });
 ```
 
 ```lua
@@ -164,8 +158,23 @@ local plugin = require('@quansat/dot/plugin').define_plugin({
    },
 })
 
-plugin.register_metadata({ /* ... */ }) -- for ingress plugins
-plugin.query({ /* ... */ }) -- for egress plugins
+plugin.register_metadata({ /* ... */ })
+plugin.query({ /* ... */ })
+```
+
+#### Engine/Dashboard Plugin 
+
+The plugins discussed above adds metadata to the tracking data. It would also be helpful to have some way to display this metadata in the dashboard or output in a human-readable format in the CLI query results. For that, we probably need a separate layer of plugin support in the engine/dashboard that consumes the metadata and transform it to the right format for display.
+
+```lua
+-- ~/.config/dot/init.lua
+return {
+   plugins = {
+      my_plugin = {
+         -- ... plugin definition ...
+      },
+   },
+}
 ```
 
 [rust]: https://rust-lang.org
