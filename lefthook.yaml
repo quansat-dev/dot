@@ -5,8 +5,8 @@ pre-commit:
   follow: true
   piped: true
   jobs:
-    - name: desktop
-      root: apps/desktop
+    - name: engine
+      root: engine
       group:
         parallel: false
         jobs:

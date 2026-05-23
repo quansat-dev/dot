@@ -1,8 +1,8 @@
 [package]
-name = "quansat-dot"
+name = "quansat-engine"
 version = "0.1.0"
 edition = "2024"
-description = "Digital observability toolkit — a tracker for personal digital routines"
+description = "engine for dot - digital observability toolkit"
 readme = "README.md"
 homepage = "https://dot.quansat.dev"
 repository = "https://github.com/quansat-dev/dot"
