@@ -42,11 +42,11 @@ This is the core component that handles the tracking via native OS APIs.
    dot engine stop
    ```
 
-3. Start or stop a project (tracking will be associated with the project until it is stopped)
+3. Select a project (tracking will be associated with the project until changed)
 
    ```bash
-   dot project start <project-name> --memo "some optional memo about the project"
-   dot project stop <project-name>
+   dot project select <project-name>
+   dot project deselect
    ```
 
 4. Configure the engine via a config file in Lua, e.g. `~/.config/dot/init.lua`:
@@ -69,7 +69,6 @@ dot query \
    [--app <app-name>] \
    [--from <start-date>] [--to <end-date>] \
    [--period <all | N day[s]|week[s]|month[s]|year[s]>] \
-   [--metric <total|active>]
 ```
 
 #### Sensible Defaults
