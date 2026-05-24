@@ -74,3 +74,4 @@ Built in public, free to use, modify, and share. Note that "open source" doesn't
 ## Prior Arts & Inspiration Pool
 
 - [mrusme/zeit](https://github.com/mrusme/zeit): a CLI tool; has the right idea, but quite rudimentary and require manual trigger.
+- [wakatime](https://github.com/wakatime) is quite nice but [it has become a subscription service](https://wakatime.com/pricing). There is also [wakatime-focused](https://github.com/joshuadavidthomas/wakatime-focusd), or [wakatime-desktop](https://github.com/wakatime/desktop-wakatime) that may be relevant given the discussed use case.
