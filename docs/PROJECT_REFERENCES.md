@@ -26,14 +26,11 @@ Imagine this use case: I am a freelancer working primarily on my desktop/laptop,
 
 dot runs in the background and tracks how much time I spend on each app, globally and scoped within a project if specified:
 
-- I can manually "start" a project, after which tracked time & activity will be associated with that project until I "stop" it.
+- I can optionally "select" a project, after which tracked time & activity will be associated with that project until I "deselect" it. Time tracked without selecting a project will be associated with a default/global project.
 - When I go into my code editor, an optional dot integration (editor plugin), if present, will track in more detail what repo/branch/file/commit I am working on. Looking to [Wakatime](https://wakatime.com/), for example, time working on `.md` files is associated with a separate category "Writing docs".
 - When I go into my web browser, an optional dot integration (browser extension), if present, will track in more detail which web domains I am spending time on. Note that dot only tracks the domain, not the specific page, for privacy reasons.
 
-Regardless of the app, dot can track two metrics:
-
-- the "total time" I am on an app, i.e having it open and in focus,
-- the "active time" I am on an app, i.e performing input events, e.g. mouse movement, keyboard typing, etc.,
+Regardless of the app, dot can track how much time I am on an app and show an aggregation of input events, e.g. number of keystrokes, mouse clicks, etc.
 
 dot can show statistics:
 
