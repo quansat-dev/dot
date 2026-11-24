@@ -5,6 +5,8 @@
 {
   languages.zig = {
     enable = true;
+    version = "0.17.1";
+		lsp.enable = false;
   };
   packages = with pkgs; [ lefthook ];
 
