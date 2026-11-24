@@ -1,13 +1,12 @@
-# yaml-language-server: $schema=https://devenv.sh/devenv.schema.json
 inputs:
   nixpkgs:
     url: github:cachix/devenv-nixpkgs/rolling
   zig-overlay:
     url: github:mitchellh/zig-overlay
+  zls:
+    url: github:zigtools/zls/0.17.0
     inputs:
       nixpkgs:
         follows: nixpkgs
-tui:
-  statusline:
-    enabled: false
-
+      zig-overlay:
+        follows: zig-overlay

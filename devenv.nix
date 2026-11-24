@@ -6,9 +6,8 @@
   languages.zig = {
     enable = true;
     version = "0.17.1";
-		lsp.enable = false;
   };
-  packages = with pkgs; [ lefthook ];
+  packages = with pkgs; [ lefthook libX11 libXtst pkg-config ];
 
   enterShell = ''
 		echo -e "\033[0;32mRun 'lefthook install' if this is your first time!\033[0m"
