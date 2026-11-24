@@ -4,7 +4,7 @@ glob_matcher: doublestar
 pre-commit:
   follow: true
   piped: true
-  skip: 
+  skip:
     - merge
     - rebase
   jobs:
@@ -14,10 +14,10 @@ pre-commit:
         parallel: false
         jobs:
           - name: check
-            run: zig check
+            run: zig ast-check
             stage_fixed: true
           - name: format
-            run: zig ast-check
+            run: zig fmt
             stage_fixed: true
 commit-msg:
   jobs:
