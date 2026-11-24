@@ -4,6 +4,9 @@ glob_matcher: doublestar
 pre-commit:
   follow: true
   piped: true
+  skip: 
+    - merge
+    - rebase
   jobs:
     - name: engine
       root: engine
@@ -11,10 +14,10 @@ pre-commit:
         parallel: false
         jobs:
           - name: check
-            run: cargo check
+            run: zig check
             stage_fixed: true
           - name: format
-            run: cargo fmt
+            run: zig ast-check
             stage_fixed: true
 commit-msg:
   jobs:

@@ -5,22 +5,22 @@
 I am building this to first and foremost solve my own problem. The ideal persona for the MVP is therefore:
 
 ```
-I am a freelancing developer 
-    in need of a tool to semi-automatically track my digital activities across devices and projects, 
+I am a freelancing developer
+    in need of a tool to semi-automatically track my digital activities across devices and projects,
     without paying for subscriptions while retaining total control over my data,
     so that I can better understand how I spend my time and possess the data needed to generate accurate invoices or client reports.
-``` 
+```
 
 ## Overview
 
-### I. Engine 
+### I. Engine
 
-This is the core component that handles the tracking via native OS APIs. 
+This is the core component that handles the tracking via native OS APIs.
 
-- since it needs to be cross-platform and performant, [rust] is likely a good candidate. 
-- dot should come with a simple CLI out of the box to interact with the engine. [clap] is a good library for this purpose.
+- since it needs to be cross-platform and performant, [zig] is likely a good candidate.
+- dot should come with a simple CLI out of the box to interact with the engine.
 
-1. Install the engine via a single command on all UNIX-like systems or [winget] for Windows
+1. Install the engine via a single command on all UNIX-like systems ok [winget] for Windows
 
     ```bash
     # UNIX
@@ -61,7 +61,7 @@ This is the core component that handles the tracking via native OS APIs.
 
 The CLI should support some basic query capabilities to show statistics about the tracked data. This should come out-of-the-box with the engine.
 
-For example, 
+For example,
 
 ```bash
 dot query \
@@ -86,7 +86,7 @@ Datetime (`--from` and `--to`) should accept some common format, but typically e
 
 For the MVP, let's hold off on building any desktop/web GUI for now and implement some form of text-based user interface (TUI) dashboard to interact with the engine and show some basic statistics. This is good since the target audience for this phase is developers, and we will have some opportunities to experiment with the overall dashboard design.
 
-The TUI should be in rust as well (likely with [ratatui]), and can be installed together with the engine (if not too complex or heavy in size) or as a separate addon package.
+The TUI should be in zig as well, and can be installed together with the engine (if not too complex or heavy in size) or as a separate addon package.
 
 ```bash
 dot dashboard
@@ -106,7 +106,7 @@ We can start with the following plugins:
 2. Lua-based neovim plugin that does the same as (1).
 3. Browser extension (likely implemented using [wxt]) that adds metadata about the web domain, and show relevant stats in the extension popup.
 4. [polybar] (linux-only) plugin that utilises the query capabilities in II.
- 
+
 #### Plugin-to-Engine Interprocess Communication
 
 We'd likely need to implement some form of communication between the plugins and engine to add the metadata. Some ideas:
@@ -119,7 +119,7 @@ We'd likely need to implement some form of communication between the plugins and
 > [!NOTE]
 > This is not strictly necessary for the MVP, but something worth keeping in mind when designing the plugin system.
 
-For extensibility, we can add some first-party libraries in different languages to provide some minimal abstraction for building plugins, e.g. a rust library, a lua library, and a javascript library. The example API could be as follows:
+For extensibility, we can add some first-party libraries in different languages to provide some minimal abstraction for building plugins, e.g. a zig library, a lua library, and a javascript library. The example API could be as follows:
 
 ```js
 import { definePlugin } from '@quansat/dot/plugin';
@@ -131,22 +131,38 @@ const plugin = definePlugin({
    },
 });
 
-plugin.registerMetadata({ /* ... */ }); 
+plugin.registerMetadata({ /* ... */ });
 plugin.query({ /* ... */ });
 ```
 
-```rust
-use quansat_dot::plugin::define_plugin;
+```zig
+const std = @import("std");
+const quansat_dot = @import("quansat_dot");
 
-let plugin = define_plugin!(
-   name: "my-plugin",
-   engine: {
-      // ... socket / REST configuration ...
-   },
-);
+pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+    const allocator = gpa.allocator();
 
-plugin.register_metadata({ /* ... */ });
-plugin.query({ /* ... */ });
+    // Zig has no declarative/procedural macros like `define_plugin!`;
+    // use a factory function or `comptime` builder taking a config struct.
+    var plugin = try quansat_dot.plugin.definePlugin(allocator, .{
+        .name = "my-plugin",
+        .engine = .{
+            // ... socket / REST configuration ...
+        },
+    });
+    defer plugin.deinit();
+
+    try plugin.registerMetadata(.{
+        // ... metadata fields ...
+    });
+
+    const result = try plugin.query(.{
+        // ... query fields ...
+    });
+    _ = result;
+}
 ```
 
 ```lua
@@ -161,7 +177,7 @@ plugin.register_metadata({ /* ... */ })
 plugin.query({ /* ... */ })
 ```
 
-#### Engine/Dashboard Plugin 
+#### Engine/Dashboard Plugin
 
 The plugins discussed above adds metadata to the tracking data. It would also be helpful to have some way to display this metadata in the dashboard or output in a human-readable format in the CLI query results. For that, we probably need a separate layer of plugin support in the engine/dashboard that consumes the metadata and transform it to the right format for display.
 
@@ -176,9 +192,7 @@ return {
 }
 ```
 
-[rust]: https://rust-lang.org
+[zig]: https://ziglang.org/
 [winget]: https://github.com/microsoft/winget-cli
-[ratatui]: https://ratatui.rs/
-[clap]: https://github.com/clap-rs/clap
 [polybar]: https://github.com/polybar/polybar
 [wxt]: https://wxt.dev/
