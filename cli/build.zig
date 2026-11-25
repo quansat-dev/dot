@@ -10,8 +10,12 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     }) });
 
+    const zli_dep = b.dependency("zli", .{ .target = target, .optimize = optimize });
+    exe.root_module.addImport("zli", zli_dep.module("zli"));
+
     b.installArtifact(exe);
 
     const run = b.addRunArtifact(exe);
+    run.addPassthruArgs();
     b.step("run", "Run dot").dependOn(&run.step);
 }
