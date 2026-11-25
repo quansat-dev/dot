@@ -25,7 +25,7 @@ pub fn build(b: *std.Build) void {
 
     const x11_c: Translator = .init(translate_c, .{
         .name = "x11_c",
-        .c_source_file = b.path("src/platform/x11.h"),
+        .c_source_file = b.path("src/platform/x11/x11.h"),
         .target = target,
         .optimize = optimize,
         // Header discovery during translation plus linking on x11_c.mod.
@@ -36,7 +36,7 @@ pub fn build(b: *std.Build) void {
     });
 
     const backend_root = if (std.mem.eql(u8, backend_name, "x11"))
-        b.path("src/platform/x11.zig")
+        b.path("src/platform/x11/backend.zig")
     else
         std.debug.panic("unsupported backend: {s}", .{backend_name});
 
