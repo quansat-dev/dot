@@ -1,6 +1,12 @@
 .{
     .name = .cli,
     .version = "0.0.1",
+    .dependencies = .{
+        .zli = .{
+            .url = "https://github.com/xcaeser/zli/archive/v7.1.0.tar.gz",
+            .hash = "zli-7.1.0-LeUjpgQZAQCMktUS2JV2U01noOOweTI6ruanCWSr3Ub6",
+        },
+    },
     .minimum_zig_version = "0.17.1",
     .paths = .{""},
     .fingerprint = 0x48f6513cea3dc729,
