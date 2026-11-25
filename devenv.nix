@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -7,12 +8,31 @@
     enable = true;
     version = "0.17.1";
   };
-  packages = with pkgs; [ lefthook libX11 libXtst pkg-config ];
+  packages = with pkgs; [
+    lefthook
+    libX11
+    libXtst
+    pkg-config
+  ];
+
+  tasks."engine:build" = {
+    exec = "zig build";
+    cwd = "${config.git.root}/engine";
+  };
+
+  tasks."workspace:init" = {
+    exec = ''
+      lefthook install
+      touch .devenv/.initialized
+      echo '{"devenv":{"messages":["\u001b[1;32m✓ Workspace initialized!\u001b[0m"]}}' > "$DEVENV_TASK_OUTPUT_FILE"
+    '';
+    status = "test -f .devenv/.initialized";
+    before = [ "devenv:enterShell" ];
+  };
 
   enterShell = ''
-		echo -e "\033[0;32mRun 'lefthook install' if this is your first time!\033[0m"
     if [ -n "$DEVENV_CD" ]; then
-      cd "$DEVENV_CD"
+    	cd "$DEVENV_CD"
     fi
   '';
 }
