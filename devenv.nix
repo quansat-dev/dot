@@ -15,6 +15,11 @@
     pkg-config
   ];
 
+  tasks."cli:build" = {
+    exec = "zig build";
+    cwd = "${config.git.root}/cli";
+  };
+
   tasks."engine:build" = {
     exec = "zig build";
     cwd = "${config.git.root}/engine";
