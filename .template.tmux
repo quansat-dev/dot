@@ -18,7 +18,7 @@ main() {
 		# create second window for terminals
 		tmux new-window -n "$win_terms" -c "$workdir" "command -v devenv >/dev/null 2>&1 && devenv shell || exec $SHELL"
 
-		tmux split-window -h -t "$session:$win_terms.1" -c "$workdir" "command -v devenv >/dev/null 2>&1 && DEVENV_CD=engine devenv shell || exec $SHELL"
+		tmux split-window -h -t "$session:$win_terms.1" -c "$workdir" "command -v devenv >/dev/null 2>&1 && DEVENV_CD=packages/engine devenv shell || exec $SHELL"
 
 		tmux select-window -t "$session:$win_code"
 	fi

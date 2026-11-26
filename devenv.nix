@@ -17,12 +17,12 @@
 
   tasks."cli:build" = {
     exec = "zig build";
-    cwd = "${config.git.root}/cli";
+    cwd = "${config.git.root}/packages/cli";
   };
 
   tasks."engine:build" = {
     exec = "zig build";
-    cwd = "${config.git.root}/engine";
+    cwd = "${config.git.root}/packages/engine";
   };
 
   tasks."workspace:init" = {
